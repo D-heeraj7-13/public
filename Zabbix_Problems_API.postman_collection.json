@@ -1,0 +1,192 @@
+{
+  "info": {
+    "name": "Zabbix Problems API",
+    "_postman_id": "zabbix-problems-api",
+    "description": "Collection for testing Zabbix problem.get API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Get Auth Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"user.login\",\n  \"params\": {\n    \"username\": \"Admin\",\n    \"password\": \"zabbix\"\n  },\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/zabbix-proxy",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "zabbix-proxy"]
+        },
+        "description": "Get authentication token from Zabbix"
+      },
+      "response": []
+    },
+    {
+      "name": "2. Get Problems (Recent)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"problem.get\",\n  \"params\": {\n    \"output\": [\"eventid\", \"objectid\", \"clock\", \"r_clock\", \"name\", \"acknowledged\", \"severity\"],\n    \"selectTags\": [\"tag\", \"value\"],\n    \"recent\": true,\n    \"sortfield\": [\"eventid\"],\n    \"sortorder\": \"DESC\"\n  },\n  \"auth\": \"7de73a2634c45b95faaecb45d0429286005a442e974352f4431eaee833a66d00\",\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/zabbix-proxy",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "zabbix-proxy"]
+        },
+        "description": "Get recent problems with time, recovery time, and severity"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Problems (With Filters)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"problem.get\",\n  \"params\": {\n    \"output\": [\"eventid\", \"objectid\", \"clock\", \"r_clock\", \"name\", \"acknowledged\", \"severity\"],\n    \"selectTags\": [\"tag\", \"value\"],\n    \"recent\": true,\n    \"severities\": [2, 3, 4, 5],\n    \"sortfield\": [\"eventid\"],\n    \"sortorder\": \"DESC\",\n    \"limit\": 100\n  },\n  \"auth\": \"7de73a2634c45b95faaecb45d0429286005a442e974352f4431eaee833a66d00\",\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/zabbix-proxy",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "zabbix-proxy"]
+        },
+        "description": "Get problems filtered by severity (Warning, Average, High, Disaster)"
+      },
+      "response": []
+    },
+    {
+      "name": "4. Get Problems (By Host Group)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"problem.get\",\n  \"params\": {\n    \"output\": [\"eventid\", \"objectid\", \"clock\", \"r_clock\", \"name\", \"acknowledged\", \"severity\"],\n    \"selectTags\": [\"tag\", \"value\"],\n    \"recent\": true,\n    \"groupids\": [\"2\"],\n    \"sortfield\": [\"eventid\"],\n    \"sortorder\": \"DESC\"\n  },\n  \"auth\": \"7de73a2634c45b95faaecb45d0429286005a442e974352f4431eaee833a66d00\",\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/zabbix-proxy",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "zabbix-proxy"]
+        },
+        "description": "Get problems for specific host group (replace groupids with your group ID)"
+      },
+      "response": []
+    },
+    {
+      "name": "5. Get Trigger Details",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"trigger.get\",\n  \"params\": {\n    \"output\": [\"triggerid\", \"description\", \"priority\", \"status\", \"comments\"],\n    \"selectHosts\": [\"hostid\", \"name\"],\n    \"selectDependencies\": [\"triggerid\", \"description\"],\n    \"triggerids\": [\"13491\"],\n    \"expandDescription\": true\n  },\n  \"auth\": \"7de73a2634c45b95faaecb45d0429286005a442e974352f4431eaee833a66d00\",\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/zabbix-proxy",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "zabbix-proxy"]
+        },
+        "description": "Get trigger details (replace triggerids with objectid from problem.get)"
+      },
+      "response": []
+    },
+    {
+      "name": "6. Get Host Interfaces",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"hostinterface.get\",\n  \"params\": {\n    \"output\": [\"hostid\", \"ip\", \"dns\", \"port\", \"type\", \"main\"],\n    \"hostids\": [\"10084\"]\n  },\n  \"auth\": \"7de73a2634c45b95faaecb45d0429286005a442e974352f4431eaee833a66d00\",\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/zabbix-proxy",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "zabbix-proxy"]
+        },
+        "description": "Get host interface details (IP, DNS, Port)"
+      },
+      "response": []
+    },
+    {
+      "name": "7. Get All Host Groups",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"hostgroup.get\",\n  \"params\": {\n    \"output\": [\"groupid\", \"name\"]\n  },\n  \"auth\": \"7de73a2634c45b95faaecb45d0429286005a442e974352f4431eaee833a66d00\",\n  \"id\": 1\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/zabbix-proxy",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "zabbix-proxy"]
+        },
+        "description": "Get all host groups"
+      },
+      "response": []
+    }
+  ]
+}
